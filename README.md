@@ -1,27 +1,58 @@
-# General Go template repository
+# projectctl
 
-This is a general template repository containing some basic files every GitHub repo owned by Giant Swarm should have.
+projectctl is a CLI tool to interact with GitHub ProjectV2 boards provided by Giant Swarm.
 
-Note also these more specific repositories:
+## Features
 
-- [template-app](https://github.com/giantswarm/template-app)
-- [gitops-template](https://github.com/giantswarm/gitops-template)
-- [python-app-template](https://github.com/giantswarm/python-app-template)
+- List projects for an owner (user or organization).
+- List items for a given project.
+- List fields for a given project.
 
-## Creating a new repository
+## Prerequisites
 
-Please do not use the `Use this template` function in the GitHub web UI.
+- Go installed on your system.
+- A valid GitHub token with appropriate scopes. Ensure the environment variable GITHUB_TOKEN is set. The token requires the 'read:project' scope for proper functioning.
 
-Check out the according [handbook article](https://handbook.giantswarm.io/docs/dev-and-releng/repository/go/) for better instructions.
+## Installation & Build
 
-### Some suggestions for your README
+1. Clone the repository.
+2. Set your GitHub token:
+   ```bash
+   export GITHUB_TOKEN=your_token_here
+   ```
+3. Build the project:
+   ```bash
+   go build -o projectctl
+   ```
 
-After you have created your new repository, you may want to add some of these badges to the top of your README.
+## Usage
 
-- **CircleCI:** After enabling builds for this repo via [this link](https://circleci.com/setup-project/gh/giantswarm/REPOSITORY_NAME), you can find badge code on [this page](https://app.circleci.com/settings/project/github/giantswarm/REPOSITORY_NAME/status-badges).
+projectctl provides several commands:
 
-- **Go reference:** use [this helper](https://pkg.go.dev/badge/) to create the markdown code.
+### List Projects
 
-- **Go report card:** enter the module name on the [front page](https://goreportcard.com/) and hit "Generate report". Then use this markdown code for your badge: `[![Go report card](https://goreportcard.com/badge/github.com/giantswarm/REPOSITORY_NAME)](https://goreportcard.com/report/github.com/giantswarm/REPOSITORY_NAME)`
+Lists GitHub ProjectV2 boards for a given owner:
 
-- **Sourcegraph "used by N projects" badge**: for public Go repos only: `[![Sourcegraph](https://sourcegraph.com/github.com/giantswarm/REPOSITORY_NAME/-/badge.svg)](https://sourcegraph.com/github.com/giantswarm/REPOSITORY_NAME)`
+```bash
+./projectctl projects --owner <owner> [--owner-type user|organization] [--output default|table|json|yaml]
+```
+
+### List Items
+
+Lists items for a specified project:
+
+```bash
+./projectctl items --project-id <project_id> [--output default|table|json|yaml]
+```
+
+### List Fields
+
+Lists all fields for a specified project:
+
+```bash
+./projectctl fields --project-id <project_id> [--output default|table|json|yaml]
+```
+
+## License
+
+This project is licensed under the terms of the LICENSE file.
