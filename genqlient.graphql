@@ -1,0 +1,231 @@
+query GetProjects($orgName: String!, $first: Int!, $after: String!) {
+  organization(login: $orgName) {
+    projectsV2(first: $first, after: $after) {
+      totalCount
+      pageInfo {
+        endCursor
+        hasNextPage
+        startCursor
+      }
+      nodes {
+        id
+        title
+        number
+      }
+    }
+  }
+}
+
+query GetProjectFields($projectId: ID!, $first: Int!, $after: String!) {
+  node(id: $projectId) {
+    ... on ProjectV2 {
+      fields(first: $first, after: $after) {
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+        }
+        nodes {
+          __typename
+          ... on ProjectV2Field {
+            id
+            name
+            dataType
+          }
+          ... on ProjectV2SingleSelectField {
+            id
+            name
+            dataType
+            options {
+              color
+              description
+              id
+              name
+            }
+          }
+          ... on ProjectV2IterationField {
+            id
+            name
+            dataType
+            configuration {
+              iterations {
+                duration
+                id
+                startDate
+                title
+              }
+              duration
+              startDay
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query GetProjectItems($projectId: ID!, $first: Int!, $after: String!) {
+  node(id: $projectId) {
+    ... on ProjectV2 {
+      items(first: $first, after: $after) {
+        totalCount
+        pageInfo {
+          endCursor
+          hasNextPage
+          startCursor
+        }
+        nodes {
+          id
+          fieldValues(first: 100) {
+            nodes {
+              ... on ProjectV2ItemFieldTextValue {
+                text
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldDateValue {
+                date
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldRepositoryValue {
+                repository {
+                  name
+                }
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                name
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldIterationValue {
+                duration
+                iterationId
+                startDate
+                title
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldLabelValue {
+                labels(first: 100) {
+                  nodes {
+                    id
+                    name
+                    description
+                  }
+                }
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldMilestoneValue {
+                milestone {
+                  title
+                  description
+                  dueOn
+                }
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldNumberValue {
+                number
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldPullRequestValue {
+                pullRequests(first: 100) {
+                  nodes {
+                    id
+                    title
+                  }
+                }
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldReviewerValue {
+                reviewers(first: 100) {
+                  nodes {
+                    ... on Bot {
+                      login
+                    }
+                    ... on Mannequin {
+                      login
+                    }
+                    ... on Team {
+                      name
+                    }
+                    ... on User {
+                      login
+                    }
+                  }
+                }
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+              ... on ProjectV2ItemFieldUserValue {
+                users(first: 100) {
+                  nodes {
+                    login
+                  }
+                }
+                field {
+                  ... on ProjectV2FieldCommon {
+                    name
+                  }
+                }
+              }
+            }
+          }
+          content {
+            ... on Issue {
+              title
+              assignees(first: 100) {
+                nodes {
+                  login
+                }
+              }
+              labels(first: 100) {
+                nodes {
+                  id
+                  name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
